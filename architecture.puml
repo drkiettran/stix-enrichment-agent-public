@@ -1,0 +1,78 @@
+' ═══════════════════════════════════════════════════════════════════════════
+'  STIX Enrichment Agent — Container Diagram (C4 Level 2)
+' ───────────────────────────────────────────────────────────────────────────
+'  Scope:        Working prototype of an agentic AI service that enriches
+'                thin STIX 2.1 threat intelligence bundles. Shows the
+'                containers, the integration boundary with an upstream
+'                STIX producer (via filesystem queues), the dependency
+'                on local Ollama LLM inference, and the replaceable
+'                mock-knowledge-base seam for lookup tools.
+'  Audience:     Architects, technical reviewers, README rendering
+'  Notation:     Strict C4-PlantUML (Container level)
+'  Author:       Kiet T. Tran
+' ═══════════════════════════════════════════════════════════════════════════
+@startuml STIX_Enrichment_Agent_Container
+
+' Use the official C4-PlantUML library
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+LAYOUT_WITH_LEGEND()
+
+title STIX Enrichment Agent — Container Diagram\n<size:13><i>Agentic AI Proof-of-Concept for STIX 2.1 Threat Intel Enrichment</i></size>
+
+' ── External Actors ────────────────────────────────────────────────────────
+Person(operators, "Threat Analysts / Operators", "Consume enriched bundles from the outbox; inspect agent traces during review and audit")
+
+' ── External Systems ───────────────────────────────────────────────────────
+System_Ext(stix_producer, "Upstream STIX Producer", "External producer of thin STIX 2.1 bundles. Drops bundles into the inbox for enrichment.")
+System_Ext(ollama, "Ollama Service", "Local LLM inference (Llama 3.1 8B) with native tool calling. Self-hosted — no external AI API egress.")
+System_Ext(mock_kb, "Threat Intel Catalogs", "MITRE ATT&CK techniques, threat-actor catalog, related intel records. Currently mocked JSON; production seam for real catalogs.")
+System_Ext(downstream, "Downstream Consumers", "Dissemination services and TAXII subscribers receiving enriched bundles")
+
+' ── Filesystem Queues (the integration boundary) ───────────────────────────
+SystemQueue_Ext(inbox, "inbox/", "Filesystem queue. Bundles dropped here by the upstream producer trigger the agent.")
+SystemQueue_Ext(outbox, "outbox/", "Filesystem queue. Enriched bundles written here for downstream pickup.")
+
+' ── The Enrichment Agent System ────────────────────────────────────────────
+System_Boundary(agent, "STIX Enrichment Agent (Python)") {
+
+  Container(watcher, "File Watcher", "watchdog + CLI", "Watches inbox/ for new bundles. On creation event, kicks off the agent loop. On success, moves originals to inbox/processed/.")
+
+  Container(orchestrator, "Agent Orchestrator", "ReAct loop", "Manages the agentic loop: sends messages to the LLM, dispatches tool calls, terminates on agent decision or max-steps timeout.")
+
+  Container(llm_client, "LLM Client", "Ollama Python SDK", "Thin wrapper over Ollama. Manages model selection, message formatting, and the tool-definition payload.")
+
+  Container(lookup_tools, "Lookup Tools", "Python — read-only", "mitre_attack_lookup, threat_actor_search, related_intel_search, assess_completeness. Research without commit.")
+
+  Container(mutation_tools, "Mutation Tools", "Python — write", "add_attack_pattern, add_threat_actor, add_relationship. Validated references; LLM cannot create dangling SROs or invent IDs.")
+
+  Container(session, "Enrichment Session", "stix2 + in-memory state", "Mutable working state: original bundle objects + accumulated additions. Serializable to a final STIX 2.1 bundle.")
+
+  Container(tracer, "Tracer", "Rich console", "Emits visible (thought, action, observation) trace per step. The trace IS the audit artifact.")
+}
+
+' ── Relationships ──────────────────────────────────────────────────────────
+' Integration in
+Rel_R(stix_producer, inbox, "Drops thin bundles", "JSON write")
+Rel_R(inbox, watcher, "Triggers on new file", "FS event")
+Rel_D(watcher, orchestrator, "Starts loop with bundle", "")
+
+' Agent loop internals
+Rel_D(orchestrator, llm_client, "Step request + tool defs", "")
+Rel_R(llm_client, ollama, "Tool-calling chat", "REST")
+Rel_D(orchestrator, lookup_tools, "Dispatches read calls", "")
+Rel_D(orchestrator, mutation_tools, "Dispatches write calls", "")
+Rel_R(lookup_tools, mock_kb, "Reads catalogs", "JSON")
+Rel(mutation_tools, session, "Appends validated SDOs/SROs", "")
+Rel(lookup_tools, session, "Reads state for assess_completeness", "")
+Rel_L(orchestrator, tracer, "Emits trace events", "")
+
+' Integration out
+Rel(orchestrator, outbox, "Writes enriched bundle on completion", "JSON write")
+Rel_R(outbox, downstream, "Picked up for dissemination", "TAXII / API")
+
+' Operator consumption
+Rel_D(operators, outbox, "Reviews enriched bundles", "")
+Rel_D(operators, tracer, "Reviews trace (live or logs)", "Console")
+
+@enduml

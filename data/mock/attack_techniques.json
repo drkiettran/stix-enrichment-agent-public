@@ -1,0 +1,88 @@
+{
+  "techniques": [
+    {
+      "mitre_id": "T1566",
+      "name": "Phishing",
+      "description": "Adversaries may send phishing messages to gain access to victim systems. All forms of phishing are electronically delivered social engineering.",
+      "tactics": ["initial-access"],
+      "indicators": ["email", "url", "attachment", "link", "credential-harvest"]
+    },
+    {
+      "mitre_id": "T1566.001",
+      "name": "Spearphishing Attachment",
+      "description": "Adversaries may send spearphishing emails with a malicious attachment in an attempt to gain access to victim systems.",
+      "tactics": ["initial-access"],
+      "indicators": ["email-attachment", "malicious-document", "office-macro"]
+    },
+    {
+      "mitre_id": "T1566.002",
+      "name": "Spearphishing Link",
+      "description": "Adversaries may send spearphishing emails with a malicious link to elicit sensitive information or to gain access to victim systems.",
+      "tactics": ["initial-access"],
+      "indicators": ["email-link", "phishing-url", "credential-harvest"]
+    },
+    {
+      "mitre_id": "T1190",
+      "name": "Exploit Public-Facing Application",
+      "description": "Adversaries may attempt to exploit a weakness in an Internet-facing host or system to initially access a network.",
+      "tactics": ["initial-access"],
+      "indicators": ["web-exploit", "cve", "vulnerable-service", "scanner-traffic"]
+    },
+    {
+      "mitre_id": "T1078",
+      "name": "Valid Accounts",
+      "description": "Adversaries may obtain and abuse credentials of existing accounts as a means of gaining Initial Access, Persistence, Privilege Escalation, or Defense Evasion.",
+      "tactics": ["initial-access", "persistence", "privilege-escalation", "defense-evasion"],
+      "indicators": ["credential-stuffing", "compromised-account", "anomalous-login"]
+    },
+    {
+      "mitre_id": "T1059",
+      "name": "Command and Scripting Interpreter",
+      "description": "Adversaries may abuse command and script interpreters to execute commands, scripts, or binaries.",
+      "tactics": ["execution"],
+      "indicators": ["powershell", "cmd", "bash", "python-script", "script-execution"]
+    },
+    {
+      "mitre_id": "T1059.001",
+      "name": "PowerShell",
+      "description": "Adversaries may abuse PowerShell commands and scripts for execution.",
+      "tactics": ["execution"],
+      "indicators": ["powershell", "encoded-command", "obfuscated-script"]
+    },
+    {
+      "mitre_id": "T1071",
+      "name": "Application Layer Protocol",
+      "description": "Adversaries may communicate using OSI application layer protocols to avoid detection/network filtering by blending in with existing traffic.",
+      "tactics": ["command-and-control"],
+      "indicators": ["c2-traffic", "https-c2", "dns-c2", "anomalous-domain"]
+    },
+    {
+      "mitre_id": "T1071.001",
+      "name": "Web Protocols",
+      "description": "Adversaries may communicate using application layer protocols associated with web traffic to avoid detection.",
+      "tactics": ["command-and-control"],
+      "indicators": ["http-c2", "https-c2", "anomalous-url"]
+    },
+    {
+      "mitre_id": "T1486",
+      "name": "Data Encrypted for Impact",
+      "description": "Adversaries may encrypt data on target systems or on large numbers of systems in a network to interrupt availability.",
+      "tactics": ["impact"],
+      "indicators": ["ransomware", "encryption", "ransom-note", "file-modification"]
+    },
+    {
+      "mitre_id": "T1027",
+      "name": "Obfuscated Files or Information",
+      "description": "Adversaries may attempt to make an executable or file difficult to discover or analyze by encrypting, encoding, or otherwise obfuscating its contents.",
+      "tactics": ["defense-evasion"],
+      "indicators": ["packed-binary", "obfuscation", "encoded-payload", "high-entropy"]
+    },
+    {
+      "mitre_id": "T1110",
+      "name": "Brute Force",
+      "description": "Adversaries may use brute force techniques to gain access to accounts when passwords are unknown or when password hashes are obtained.",
+      "tactics": ["credential-access"],
+      "indicators": ["failed-logins", "password-spray", "credential-stuffing"]
+    }
+  ]
+}

@@ -1,0 +1,47 @@
+{
+  "type": "bundle",
+  "id": "bundle--dd2df057-d53d-43a5-b890-53ede140ba69",
+  "objects": [
+    {
+      "type": "indicator",
+      "spec_version": "2.1",
+      "id": "indicator--360fb576-ac76-413d-aa9b-ad463115acd0",
+      "created": "2026-05-01T14:30:00.000Z",
+      "modified": "2026-05-01T14:30:00.000Z",
+      "name": "Suspicious PowerShell execution observed",
+      "description": "Encoded PowerShell command launched from Outlook email attachment. Document macro initiated PowerShell with -EncodedCommand flag and base64-encoded payload connecting to external C2 domain.",
+      "indicator_types": ["malicious-activity"],
+      "pattern": "[process:name = 'powershell.exe' AND process:command_line MATCHES '.*-EncodedCommand.*']",
+      "pattern_type": "stix",
+      "pattern_version": "2.1",
+      "valid_from": "2026-05-01T14:30:00.000Z"
+    },
+    {
+      "type": "observed-data",
+      "spec_version": "2.1",
+      "id": "observed-data--5c88af97-15cb-479b-9bfd-3326afee94a1",
+      "created": "2026-05-01T14:30:00.000Z",
+      "modified": "2026-05-01T14:30:00.000Z",
+      "first_observed": "2026-05-01T14:25:00.000Z",
+      "last_observed": "2026-05-01T14:30:00.000Z",
+      "number_observed": 1,
+      "object_refs": ["url--60a2194b-7e29-470c-b8c7-8236d3129bc2"]
+    },
+    {
+      "type": "url",
+      "spec_version": "2.1",
+      "id": "url--60a2194b-7e29-470c-b8c7-8236d3129bc2",
+      "value": "https://invoice-update-portal.tk/auth/verify"
+    },
+    {
+      "type": "identity",
+      "spec_version": "2.1",
+      "id": "identity--6b36207b-f7a5-499a-8f90-dccf10176dda",
+      "created": "2026-05-01T14:30:00.000Z",
+      "modified": "2026-05-01T14:30:00.000Z",
+      "name": "Submitting Sector ISAC",
+      "identity_class": "organization",
+      "sectors": ["financial-services"]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "intel_records": [
+    {
+      "indicator_pattern": "powershell",
+      "context": "PowerShell with encoded commands is a common execution technique for both APT and commodity malware. Frequently observed in initial access and lateral movement stages.",
+      "common_actors": ["APT28", "APT29", "Lazarus Group", "FIN7"],
+      "confidence": "high"
+    },
+    {
+      "indicator_pattern": "phishing-attachment",
+      "context": "Spearphishing with malicious attachments remains the most common initial access vector. Office documents with macros, ISO/IMG containers, and HTML smuggling are current trends.",
+      "common_actors": ["APT28", "APT29", "Lazarus Group", "FIN7", "APT41"],
+      "confidence": "high"
+    },
+    {
+      "indicator_pattern": "suspicious-domain",
+      "context": "Newly registered domains, typosquatting domains, and domains with high entropy are strong indicators of phishing or C2 infrastructure.",
+      "common_actors": ["APT28", "APT29", "FIN7"],
+      "confidence": "medium"
+    },
+    {
+      "indicator_pattern": "ransomware-note",
+      "context": "Ransom notes are post-encryption artifacts. Specific note formats and ransom demand language can be used to attribute to specific ransomware families.",
+      "common_actors": ["Lazarus Group", "FIN7"],
+      "confidence": "high"
+    },
+    {
+      "indicator_pattern": "exploit",
+      "context": "Public-facing exploit attempts may target known CVEs (n-day) or unknown vulnerabilities (zero-day). Pattern of probing followed by exploitation is typical.",
+      "common_actors": ["APT28", "APT29", "APT41"],
+      "confidence": "medium"
+    }
+  ]
+}

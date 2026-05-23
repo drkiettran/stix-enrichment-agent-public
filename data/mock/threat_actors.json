@@ -1,0 +1,49 @@
+{
+  "actors": [
+    {
+      "name": "APT28",
+      "aliases": ["Fancy Bear", "Sofacy", "STRONTIUM", "Sednit"],
+      "description": "Russian state-sponsored threat actor associated with the GRU. Known for cyber-espionage targeting government, military, and political organizations.",
+      "sophistication": "advanced",
+      "primary_motivation": "espionage",
+      "associated_techniques": ["T1566.001", "T1566.002", "T1190", "T1078", "T1059.001"],
+      "associated_indicators": ["xtunnel", "x-agent", "sofacy", "drovorub"]
+    },
+    {
+      "name": "APT29",
+      "aliases": ["Cozy Bear", "The Dukes", "NOBELIUM", "UNC2452"],
+      "description": "Russian state-sponsored threat actor associated with the SVR. Known for sophisticated supply-chain and cloud-focused attacks.",
+      "sophistication": "advanced",
+      "primary_motivation": "espionage",
+      "associated_techniques": ["T1078", "T1190", "T1071.001", "T1027"],
+      "associated_indicators": ["sunburst", "wellmess", "wellmail", "teardrop"]
+    },
+    {
+      "name": "Lazarus Group",
+      "aliases": ["HIDDEN COBRA", "ZINC", "APT38", "Diamond Sleet"],
+      "description": "North Korean state-sponsored threat actor known for both espionage and financially motivated attacks including ransomware and cryptocurrency theft.",
+      "sophistication": "advanced",
+      "primary_motivation": "financial-gain,espionage",
+      "associated_techniques": ["T1566.001", "T1486", "T1027", "T1059.001", "T1071"],
+      "associated_indicators": ["wannacry", "applejeus", "fallchill", "manuscrypt"]
+    },
+    {
+      "name": "FIN7",
+      "aliases": ["Carbanak", "Carbon Spider", "Sangria Tempest"],
+      "description": "Financially motivated threat group targeting retail, restaurant, and hospitality sectors. Known for point-of-sale malware and recently for ransomware operations.",
+      "sophistication": "intermediate",
+      "primary_motivation": "financial-gain",
+      "associated_techniques": ["T1566.001", "T1059.001", "T1486", "T1027"],
+      "associated_indicators": ["carbanak", "griffon", "bateleur", "darkside"]
+    },
+    {
+      "name": "APT41",
+      "aliases": ["Wicked Panda", "BARIUM", "Brass Typhoon"],
+      "description": "Chinese state-sponsored threat actor conducting both state-aligned espionage and financially motivated operations targeting healthcare, telecom, and tech sectors.",
+      "sophistication": "advanced",
+      "primary_motivation": "espionage,financial-gain",
+      "associated_techniques": ["T1190", "T1059.001", "T1071.001", "T1078"],
+      "associated_indicators": ["messagetap", "highnoon", "crackshot", "deadeye"]
+    }
+  ]
+}
