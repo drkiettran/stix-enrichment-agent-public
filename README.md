@@ -199,6 +199,21 @@ stix-enrichment-agent\
 
 ## Known limitations and design tradeoffs
 
+- **MITRE ID hallucination.** Smaller models will sometimes call
+  `add_attack_pattern` with a `mitre_id` they didn't receive from
+  `mitre_attack_lookup`. The system prompt instructs against this, and
+  the validated mutation tool prevents downstream STIX corruption — but
+  the call still gets made. The next defensive layer is to cross-check
+  every proposed `mitre_id` against the most recent `mitre_attack_lookup`
+  result and reject ones that weren't returned.
+
+- **Over-enrichment.** Without `assess_completeness` and explicit prompt
+  guidance ("1–3 attack-patterns and 0–1 threat-actor is usually
+  appropriate"), the agent will keep enriching. Knowing when to stop is
+  genuinely hard for LLMs; a reflect tool plus prompt-level stop criteria
+  is the lever. Production use would also want a hard upper bound on
+  mutations per bundle.
+
 - **Attribution risk.** The agent will sometimes attempt to attribute
   to a threat actor on weak evidence. The system prompt warns against
   this; production use would want a confidence threshold and
@@ -212,6 +227,7 @@ stix-enrichment-agent\
   prone to tool-format mistakes and hallucinated IDs than `llama3.1:8b`.
   Real production would land on a model size that balances reliability
   with serving cost.
+
 
 ### Where you'd take this next
 
@@ -236,7 +252,31 @@ stix-enrichment-agent\
 
 ## License
 
-MIT — see LICENSE file (add one if you intend to redistribute).
+MIT License — see the `LICENSE` file at the project root for the full text.
+
+```
+MIT License
+
+Copyright (c) 2026 Kiet T. Tran
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+```
 
 ---
 
