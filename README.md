@@ -98,7 +98,7 @@ ollama list
 ### 3. Set up the Python environment
 
 ```powershell
-cd path\to\stix-enrichment-agent
+cd path\to\stix-enrichment-agent-public
 python -m venv .venv
 .\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
@@ -169,7 +169,7 @@ Validates plumbing without needing Ollama.
 ## Project structure
 
 ```
-stix-enrichment-agent\
+stix-enrichment-agent-public\
 ├── README.md              # this file
 ├── architecture.puml      # C4 Container diagram of this prototype
 ├── requirements.txt
